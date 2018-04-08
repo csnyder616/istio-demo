@@ -1,0 +1,8 @@
+[package]
+name = "newsfeed"
+version = "0.1.0"
+authors = ["Chris Snyder <chris@snyder616.com>"]
+
+[dependencies]
+rocket = "0.3.7"
+rocket_codegen = "0.3.7"
