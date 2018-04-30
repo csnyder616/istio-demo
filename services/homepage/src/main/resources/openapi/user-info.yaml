@@ -1,0 +1,50 @@
+swagger: "2.0"
+info:
+  description: "Hypothetical user info API"
+  version: "0.1.0"
+  title: "User Info"
+  contact:
+    email: "chris@snyder616.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "user-info"
+basePath: "/"
+tags:
+- name: "user-info"
+  description: "User info operations"
+schemes:
+- "http"
+paths:
+  /user-info/{userId}:
+    get:
+      tags:
+      - "user-info"
+      summary: "Retrieve user info"
+      description: ""
+      operationId: "getUserInfoById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user to retrieve"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/UserInfo"
+        404:
+          description: "User not found"
+definitions:
+  UserInfo:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
