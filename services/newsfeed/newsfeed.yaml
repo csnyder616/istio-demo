@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: newsfeed
+  labels:
+    app: newsfeed
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: newsfeed
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: newsfeed-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: newsfeed
+        version: v1
+    spec:
+      containers:
+      - name: newsfeed
+        image: istio-demo/newsfeed:1.0.0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+###########################################################################
+# Ingress resource (gateway)
+##########################################################################
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /newsfeed.*
+        backend:
+          serviceName: newsfeed
+          servicePort: 80
+---

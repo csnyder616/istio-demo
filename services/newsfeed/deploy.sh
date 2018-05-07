@@ -3,7 +3,5 @@
 set -e
 
 eval $(minikube docker-env)
-docker build -t newsfeed .
-kubectl run newsfeed --image=newsfeed:latest --port=80 --image-pull-policy='Never'
-kubectl expose deployment newsfeed --type=NodePort
-curl $(minikube service --url newsfeed)/newsfeed/1
+docker build -t istio-demo/newsfeed:1.0.0 .
+kubectl apply -f newsfeed.yaml

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-info
+  labels:
+    app: user-info
+spec:
+  ports:
+  - port: 80
+    name: http
+    targetPort: 8080
+  selector:
+    app: user-info
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: user-info-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: user-info
+        version: v1
+    spec:
+      containers:
+      - name: user-info
+        image: istio-demo/user-info:1.0.0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+---
+###########################################################################
+# Ingress resource (gateway)
+##########################################################################
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /user-info.*
+        backend:
+          serviceName: user-info
+          servicePort: 80
+---

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage
+  labels:
+    app: homepage
+spec:
+  ports:
+  - port: 80
+    name: http
+    targetPort: 8080
+  selector:
+    app: homepage
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: homepage-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: homepage
+        version: v1
+    spec:
+      containers:
+      - name: homepage
+        image: istio-demo/homepage:1.0.0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+---
+###########################################################################
+# Ingress resource (gateway)
+##########################################################################
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /homepage.*
+        backend:
+          serviceName: homepage
+          servicePort: 80
+---
