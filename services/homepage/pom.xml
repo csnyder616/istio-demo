@@ -139,6 +139,19 @@
               <modelPackage>com.snyder616.istiodemo.userinfo.model</modelPackage>
             </configuration>
           </execution>
+          <execution>
+            <id>generate-newsfeed</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/openapi/newsfeed.yaml</inputSpec>
+              <language>java</language>
+              <library>resttemplate</library>
+              <apiPackage>com.snyder616.istiodemo.newsfeed.api</apiPackage>
+              <modelPackage>com.snyder616.istiodemo.newsfeed.model</modelPackage>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>

@@ -44,12 +44,24 @@ definitions:
     type: "object"
     properties:
       user:
-        $ref: "#/definitions/UserInfo"
-  UserInfo:
+        $ref: "#/definitions/HomepageUserInfo"
+      newsItems:
+        type: "array"
+        items:
+          $ref: "#/definitions/HomepageNewsItem"
+  HomepageUserInfo:
     type: "object"
     properties:
       id:
         type: "integer"
         format: "int64"
       name:
+        type: "string"
+  HomepageNewsItem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      title:
         type: "string"
