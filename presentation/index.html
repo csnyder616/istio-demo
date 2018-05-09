@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Advanced Kubernetes with Istio Service Mesh</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+<style>
+.system-diagram {
+  position: relative;
+}
+.system-diagram h5, .system-diagram h6 {
+  text-transform: none;
+  margin-bottom: 0;
+}
+.system-diagram > comp {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  background-color: #000077;
+}
+.system-diagram comp {
+  border: 3px solid rgba(0, 0, 0, .9) !important;
+  border-radius: 10px;
+  padding: 3%;
+  display: inline-block;
+  color: rgba(255, 255, 255, .7);
+  background-position: center !important;
+  background-size: cover !important;
+}
+.system-diagram comp comp {
+  background: #440000;
+}
+.system-diagram comp p, .system-diagram comp h6 {
+  margin-bottom: 0;
+}
+.system-diagram comp h6 {
+  font-size: 80%;
+}
+.system-diagram pod {
+  background: rgba(100, 100, 100, .9);
+  padding: 20px;
+  display: inline-block;
+  border-radius: 10px;
+  margin: 20px 20px 0 20px;
+}
+.system-diagram comp .logo {
+  height: 50px;
+  vertical-align: -20%;
+  width: auto;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  margin: 0 0px 0 10px;
+}
+.system-diagram comp comp comp {
+  background: #ffffaa;
+  color: #000000;
+  font-size: 40%;
+  padding: 2%;
+  border: none !important;
+  border-radius: 3px;
+}
+.istio {
+  font-family: 'Verdana' !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+}
+
+</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>Advanced Kubernetes with Istio Service Mesh</section>
+        <section>
+          <p>A microservice journey</p>
+          <div class="system-diagram">
+            <div>&nbsp;</div>
+            <div class="fragment fade-out" style="position: absolute;">
+              <img src="images/maze.jpg"/>
+            </div>
+            <comp class="fragment">
+              <h5>Legacy monolith</h5>
+              <pod>
+                <comp style="background-image: url('images/spaghetti.jpg')">
+                  <h6>
+                    Homepage application
+                    <img class="logo" src="images/asp-logo.png"/>
+                  </h6>
+                  <p>homepage, newsfeed, user-info</p>
+                </comp>
+              </pod>
+            </comp>
+            <comp class="fragment">
+              <h5>Microservice architecture</h5>
+              <div class="fragment grow">
+                <pod class="fragment shrink">
+                  <comp>
+                    <h6>
+                      homepage
+                      <img class="logo" src="images/java-logo.png"/>
+                    </h6>
+                  </comp>
+                </pod>
+              </div>
+              <div class="fragment grow">
+                <pod class="fragment shrink">
+                  <comp>
+                    <h6>
+                      newsfeed
+                      <img class="logo" src="images/rust-logo.png"/>
+                    </h6>
+                  </comp>
+                </pod>
+              </div>
+              <div class="fragment grow">
+                <pod class="fragment shrink">
+                  <comp>
+                    <h6>
+                      user-info
+                      <img class="logo" src="images/node-logo.png"/>
+                    </h6>
+                  </comp>
+                </pod>
+              </div>
+          </div>
+        </section>
+        <section>
+          <img src="images/honest-status.png"/>
+        </section>
+        <section>
+          <img src="images/mind-the-gap.jpg"/>
+        </section>
+        <section>
+          <ul class="requirements" style="position: absolute; right: 5px; width: 25%; font-size: 60%;">
+            <li class="fragment" data-fragment-index="0">Circuit breaking</li>
+            <li class="fragment" data-fragment-index="1">Tracing</li>
+            <li class="fragment" data-fragment-index="2">Canary deployments</li>
+            <li class="fragment" data-fragment-index="3">Security</li>
+            <li class="fragment" data-fragment-index="4">Load balancing</li>
+            <li class="fragment" data-fragment-index="5">Metrics</li>
+          </ul>
+          <div class="system-diagram" style="position: relative; left: -30%">
+            <comp>
+              <pod>
+                <comp>
+                  <h6>
+                    <div>
+                      homepage
+                      <img class="logo" src="images/java-logo.png"/>
+                    </div>
+                    <comp class="fragment" data-fragment-index="0">hystrix</comp>
+                    <comp class="fragment" data-fragment-index="1">spring-cloud</comp>
+                    <br/>
+                    <comp class="fragment" data-fragment-index="2">«custom»</comp>
+                    <comp class="fragment" data-fragment-index="3">spring-security</comp>
+                    <comp class="fragment" data-fragment-index="4">k8s (basic)</comp>
+                    <comp class="fragment" data-fragment-index="5">spring-boot-actuator</comp>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    <div>
+                      newsfeed
+                      <img class="logo" src="images/rust-logo.png"/>
+                    </div>
+                    <comp class="fragment" data-fragment-index="0">crius</comp>
+                    <comp class="fragment" data-fragment-index="1">opentracing-rust</comp>
+                    <br/>
+                    <comp class="fragment" data-fragment-index="2">«custom»</comp>
+                    <comp class="fragment" data-fragment-index="3">rust-tls-api</comp>
+                    <comp class="fragment" data-fragment-index="4">k8s (basic)</comp>
+                    <comp class="fragment" data-fragment-index="5">rust-metrics</comp>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    <div>
+                      user-info
+                      <img class="logo" src="images/node-logo.png"/>
+                    </div>
+                    <comp class="fragment" data-fragment-index="0">hystrixjs</comp>
+                    <comp class="fragment" data-fragment-index="1">opentracing-javascript</comp>
+                    <br/>
+                    <comp class="fragment" data-fragment-index="2">«custom»</comp>
+                    <comp class="fragment" data-fragment-index="3">https library</comp>
+                    <comp class="fragment" data-fragment-index="4">k8s (basic)</comp>
+                    <comp class="fragment" data-fragment-index="5">appmetrics</comp>
+                  </h6>
+                </comp>
+              </comp>
+            </pod>
+          </div>
+        </section>
+        <section>
+          <h1 class="istio">Istio</h1>
+          <img src="images/istio-logo.svg" style="height: 200px; width: auto; box-shadow: none; border: none; background: none;"/>
+          <div class="fragment fade-in istio">
+            <p>“An open platform to connect, manage, and secure microservices”</p>
+            <a href="https://istio.io">istio.io</a>
+          </div>
+          <div class="fragment fade-in">
+            <img src="images/ibm-logo.png">
+            <img src="images/google-logo.png">
+            <img src="images/lyft-logo.png">
+          </div>
+        </section>
+        <section>
+          <h3 class="istio">
+            Istio
+            <img src="images/istio-logo.svg" style="height: 50px; width: auto; vertical-align: middle; background: none; border: none; box-shadow: none;"/>
+          </h3>
+          <h5 class="istio fragment fade-in" style="margin: 20px 0 10px; font-size: 60%; color: gray">Capabilities</h5>
+          <ul class="istio" style="font-size: 70%;">
+            <li class="fragment fade-right">Traffic management</li>
+            <li class="fragment fade-left">Observability</li>
+            <li class="fragment fade-right">Policy enforcement</li>
+            <li class="fragment fade-left">Service identity and security</li>
+          </ul>
+          <h5 class="istio fragment fade-in" style="margin: 20px 0 10px; font-size: 60%; color: gray">Extensibility</h5>
+          <ul class="istio" style="font-size: 70%;">
+            <li class="fragment fade-right">Platform support</li>
+            <li class="fragment fade-left">Integration and customization</li>
+          </ul>
+        </section>
+        <section>
+          <h3 class="istio">
+            Architecture
+            <img src="images/istio-logo.svg" style="height: 50px; width: auto; vertical-align: middle; background: none; border: none; box-shadow: none;"/>
+          </h3>
+          <img src="images/istio-arch.svg" style="height: 400px; width: auto; background: white; border-radius: 5px;"/>
+        </section>
+        <section class="istio">
+          <h3 class="istio">
+            Learn more
+            <img src="images/istio-logo.svg" style="height: 50px; width: auto; vertical-align: middle; background: none; border: none; box-shadow: none;"/>
+          </h3>
+          <p><a href="https://istio.io">istio.io</a></p>
+          <p><a href="http://blog.christianposta.com/">blog.christianposta.com</a></p>
+          <p><a href="https://developers.redhat.com/blog/2018/03/06/introduction-istio-makes-mesh-things/">developers.redhat.com/blog</a></p>
+        </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+        transition: 'convex',
+        history: true,
+				dependencies: [
+					{ src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'https://d3js.org/d3.v4.min.js' },
+          { src: 'node_modules/reveal.js-d3js/d3js.js' },
+				]
+			});
+		</script>
+	</body>
+</html>
