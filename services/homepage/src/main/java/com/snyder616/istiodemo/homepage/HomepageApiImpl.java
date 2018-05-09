@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,18 +44,11 @@ public class HomepageApiImpl implements HomepageApi {
         .id(userId)
         .name(userInfo.getName());
 
-    // retrieve newsfeed items
-    Newsfeed newsfeed = newsfeedApi.getNewsfeedItemsByUserId(userId);
-    if (newsfeed != null && newsfeed.getNewsItems() != null) {
-      List<HomepageNewsItem> items = newsfeed.getNewsItems().stream().map(from -> {
-        HomepageNewsItem to = new HomepageNewsItem();
-        to
-            .id(from.getId())
-            .title(from.getTitle());
-        return to;
-      }).collect(Collectors.toList());
-      homepage.setNewsItems(items);
-    }
+    // fake newsfeed items
+    List<HomepageNewsItem> items = new ArrayList<>();
+    items.add(new HomepageNewsItem().id(1L).title("First news item"));
+    items.add(new HomepageNewsItem().id(2L).title("Second news item"));
+    homepage.setNewsItems(items);
 
     return ResponseEntity.ok(homepage);
   }

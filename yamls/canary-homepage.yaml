@@ -1,0 +1,29 @@
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: homepage-v2
+spec:
+  destination:
+    name: homepage
+  precedence: 2
+  match:
+    request:
+      headers:
+        x-canary:
+          regex: "true"
+  route:
+  - labels:
+      version: v2
+---
+# this doesn't work
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: homepage-v1
+spec:
+  destination:
+    name: homepage
+  precedence: 1
+  route:
+  - labels:
+      version: v1

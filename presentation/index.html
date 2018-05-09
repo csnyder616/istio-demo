@@ -21,12 +21,19 @@
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
 <style>
+body, p, h1, h2, h3, h4, h5, h6, li {
+  font-family: 'Verdana' !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+}
 .system-diagram {
   position: relative;
 }
 .system-diagram h5, .system-diagram h6 {
   text-transform: none;
   margin-bottom: 0;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 .system-diagram > comp {
   position: absolute;
@@ -44,24 +51,29 @@
   background-size: cover !important;
 }
 .system-diagram comp comp {
-  background: #440000;
+  background: #660000;
+  margin-top: 0;
+}
+.system-diagram comp comp:not(:first-of-type) {
+  margin-top: 20px;
 }
 .system-diagram comp p, .system-diagram comp h6 {
   margin-bottom: 0;
 }
 .system-diagram comp h6 {
-  font-size: 80%;
+  font-size: 50%;
 }
 .system-diagram pod {
   background: rgba(100, 100, 100, .9);
-  padding: 20px;
+  padding: 10px;
   display: inline-block;
   border-radius: 10px;
   margin: 20px 20px 0 20px;
+  vertical-align: middle;
 }
 .system-diagram comp .logo {
-  height: 50px;
-  vertical-align: -20%;
+  height: 35px;
+  vertical-align: middle;
   width: auto;
   border: 0;
   background: none;
@@ -87,7 +99,16 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Advanced Kubernetes with Istio Service Mesh</section>
+				<section>
+          <h3>Advanced Kubernetes with<br/>Istio Service Mesh</h3>
+          <p style="margin-top: 50px; color: gray;">
+            Chris Snyder<br/>
+          </p>
+          <p style="margin-top: 20px; color: lightgray;">
+            snyder616.com<br/>
+            @organsnyder<br/>
+          </p>
+        </section>
         <section>
           <p>A microservice journey</p>
           <div class="system-diagram">
@@ -219,11 +240,6 @@
             <p>“An open platform to connect, manage, and secure microservices”</p>
             <a href="https://istio.io">istio.io</a>
           </div>
-          <div class="fragment fade-in">
-            <img src="images/ibm-logo.png">
-            <img src="images/google-logo.png">
-            <img src="images/lyft-logo.png">
-          </div>
         </section>
         <section>
           <h3 class="istio">
@@ -250,14 +266,113 @@
           </h3>
           <img src="images/istio-arch.svg" style="height: 400px; width: auto; background: white; border-radius: 5px;"/>
         </section>
+        <section>
+          <div class="system-diagram">
+            <comp>
+              <pod>
+                <comp>
+                  <h6>
+                    <div>
+                      homepage
+                      <img class="logo" src="images/java-logo.png"/>
+                    </div>
+                    <comp data-fragment-index="1">spring-cloud</comp>
+                  </h6>
+                </comp>
+                <comp>
+                  <h6>
+                    <img class="logo" src="images/envoy-logo.svg"/>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    <div>
+                      newsfeed
+                      <img class="logo" src="images/rust-logo.png"/>
+                    </div>
+                    <comp data-fragment-index="1">opentracing-rust</comp>
+                  </h6>
+                </comp>
+                <comp>
+                  <h6>
+                    <img class="logo" src="images/envoy-logo.svg"/>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    <div>
+                      user-info
+                      <img class="logo" src="images/node-logo.png"/>
+                    </div>
+                    <comp data-fragment-index="1">opentracing-javascript</comp>
+                  </h6>
+                </comp>
+                <comp>
+                  <h6>
+                    <img class="logo" src="images/envoy-logo.svg"/>
+                  </h6>
+                </comp>
+              </pod>
+              <br/>
+              <pod>
+                <comp>
+                  <h6>
+                    mixer
+                    <img class="logo" src="images/istio-logo.svg"/>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    pilot
+                    <img class="logo" src="images/istio-logo.svg"/>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    istio-auth
+                    <img class="logo" src="images/istio-logo.svg"/>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    prometheus
+                    <img class="logo" src="images/prometheus-logo.png"/>
+                  </h6>
+                </comp>
+              </pod>
+              <pod>
+                <comp>
+                  <h6>
+                    jaeger
+                    <img class="logo" src="images/jaeger-logo.png"/>
+                  </h6>
+                </comp>
+              </pod>
+            </comp>
+          </div>
+        </section>
+        <section>
+          <h1>Demo</h1>
+        </section>
         <section class="istio">
           <h3 class="istio">
             Learn more
             <img src="images/istio-logo.svg" style="height: 50px; width: auto; vertical-align: middle; background: none; border: none; box-shadow: none;"/>
           </h3>
           <p><a href="https://istio.io">istio.io</a></p>
-          <p><a href="http://blog.christianposta.com/">blog.christianposta.com</a></p>
+          <p><a href="https://github.com/organsnyder/istio-demo">github.com/organsnyder/istio-demo</a></p>
           <p><a href="https://developers.redhat.com/blog/2018/03/06/introduction-istio-makes-mesh-things/">developers.redhat.com/blog</a></p>
+          <p><a href="http://blog.christianposta.com/">blog.christianposta.com</a></p>
         </section>
 			</div>
 		</div>
